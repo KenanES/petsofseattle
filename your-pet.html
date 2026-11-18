@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your pet · Pets of Seattle</title>
+<meta name="description" content="How rare is your pet? Count the licensed Seattle pets that match your pet's species, breed and neighborhood, or look up any name.">
+<link rel="canonical" href="https://petsofseattle.org/your-pet.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pets of Seattle">
+<meta property="og:url" content="https://petsofseattle.org/your-pet.html">
+<meta property="og:title" content="How rare is your pet? · Pets of Seattle">
+<meta property="og:description" content="Count the licensed Seattle pets that match your pet's species, breed and neighborhood, or look up any name.">
+<meta property="og:image" content="https://petsofseattle.org/art/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Watercolor drawings of a yellow Labrador and a brown tabby cat in front of the Space Needle and Mount Rainier">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=24">
+</head>
+<body>
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" fill="#eab53b"><g transform="translate(8.5 18.5) rotate(-14) scale(1)"><ellipse cx="0" cy="3" rx="4.2" ry="3.6"/><ellipse cx="-4.6" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(-20 -4.6 -2.6)"/><ellipse cx="-1.6" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="1.8" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="4.8" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(20 4.8 -2.6)"/></g><g transform="translate(19.5 8.5) rotate(-14) scale(0.85)"><ellipse cx="0" cy="3" rx="4.2" ry="3.6"/><ellipse cx="-4.6" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(-20 -4.6 -2.6)"/><ellipse cx="-1.6" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="1.8" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="4.8" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(20 4.8 -2.6)"/></g></svg>
+      <span class="brand-name">Pets of Seattle</span>
+    </a>
+    <div class="nav-links">
+      <a href="./#names">Names</a>
+      <a href="./#breeds">Breeds</a>
+      <a href="./#hoods">Neighborhoods</a>
+      <a href="./#vs">Dogs vs. cats</a>
+      <a href="./#licenses">Licenses</a>
+      <a href="your-pet.html" aria-current="page">Your pet</a>
+    </div>
+    <a class="cta" href="adopt.html">Adopt</a>
+  </div>
+</nav>
+
+<main class="wrap yp">
+  <section class="yp-sec" id="rare">
+    <p class="eyebrow">Your pet</p>
+    <h1 class="page-title">How rare is your pet?</h1>
+    <p class="lede">Pick a species, breed and neighborhood to count how many licensed Seattle pets match.</p>
+    <div class="yp-grid">
+      <form class="yp-form" id="rareForm" onsubmit="return false">
+        <label for="spSel">Species</label>
+        <select id="spSel"></select>
+        <label for="breedSel">Breed</label>
+        <select id="breedSel"></select>
+        <label for="zipSel2">Neighborhood</label>
+        <select id="zipSel2"></select>
+        <p class="note" id="rareNote">Loading every licensed pet in Seattle…</p>
+      </form>
+      <div class="yp-card" id="rareCard" aria-live="polite">
+        <p class="kicker">Pets like yours</p>
+        <div class="bignum" id="rareNum">…</div>
+        <p class="what" id="rareWhat"></p>
+        <span class="badge" id="rareBadge"></span>
+        <p class="odds" id="rareOdds"></p>
+        <p class="flavor" id="rareFlavor"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="yp-sec" id="lookup">
+    <h2>Look up any name</h2>
+    <p class="lede">See how many licensed pets share a name, what breeds they are, and where they live.</p>
+    <div class="yp-grid">
+      <div>
+        <form class="yp-search" id="lookForm" autocomplete="off" role="search">
+          <label class="sr" for="lookInput">Pet name</label>
+          <input type="text" id="lookInput" placeholder="Your pet's name" list="lookList" enterkeyhint="search">
+          <button type="submit" class="checkbtn">Search</button>
+          <datalist id="lookList"></datalist>
+        </form>
+        <div class="suggest" id="lookTry"></div>
+      </div>
+      <div class="yp-card yp-result" id="lookCard" aria-live="polite">
+        <p class="placeholder">Results appear here: how many pets have the name, their top breeds, and their neighborhoods.</p>
+      </div>
+    </div>
+  </section>
+
+  <a class="next-band" href="adopt.html">
+    <span><small>Next: Adopt</small>Find a pet that needs a home</span><i aria-hidden="true">→</i>
+  </a>
+</main>
+
+<footer class="wrap">
+  Data: <a href="https://data.seattle.gov/City-Administration/Seattle-Pet-Licenses/jguv-t9rb" target="_blank" rel="noopener">Seattle Pet Licenses</a>, City of Seattle Open Data, loaded live each visit. Counts include only pets with an active license, and breed is the primary breed on the license.
+</footer>
+
+<script>
+const API = 'https://data.seattle.gov/resource/jguv-t9rb.json?$limit=100000&$select=animal_s_name,species,primary_breed,zip_code';
+const SPECIES = ['Dog', 'Cat', 'Goat', 'Pig'];
+const PLURAL = { Dog: 'Dogs', Cat: 'Cats', Goat: 'Goats', Pig: 'Pigs' };
+const HOODS = {
+  '98101':'Downtown','98102':'Eastlake / Capitol Hill','98103':'Fremont / Wallingford / Green Lake','98104':'Pioneer Square / ID',
+  '98105':'U District / Laurelhurst','98106':'Delridge / Highland Park','98107':'Ballard','98108':'Georgetown / South Beacon Hill',
+  '98109':'Queen Anne / South Lake Union','98112':'Montlake / Madison Park','98115':'Wedgwood / Ravenna / View Ridge','98116':'Alki / West Seattle',
+  '98117':'Crown Hill / North Ballard','98118':'Columbia City / Rainier Valley','98119':'Upper Queen Anne / Interbay','98121':'Belltown',
+  '98122':'Central District / Capitol Hill','98125':'Lake City / Northgate','98126':'High Point / West Seattle','98133':'Bitter Lake / Broadview',
+  '98134':'SoDo','98136':'Fauntleroy / Morgan Junction','98144':'Mount Baker / Beacon Hill','98146':'White Center','98154':'Downtown',
+  '98155':'Shoreline / Lake Forest Park','98164':'Downtown','98168':'Tukwila / Boulevard Park','98177':'Richmond Beach / Shoreline',
+  '98178':'Rainier Beach / Skyway','98188':'SeaTac','98195':'University of Washington','98199':'Magnolia'
+};
+
+const $ = id => document.getElementById(id);
+const fmt = n => n.toLocaleString('en-US');
+const pct = (a, b) => b ? Math.round(100 * a / b) + '%' : '0%';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+const hood = z => HOODS[z] || '';
+const zipLabel = z => z ? (hood(z) ? `${z} · ${hood(z)}` : z) : 'Unknown ZIP';
+
+// "Retriever, Labrador" -> "Labrador Retriever"
+function cleanBreed(b) {
+  if (!b) return '';
+  b = b.trim();
+  const mixed = b.match(/^Mixed Breed,\s*(\w+)/i);
+  if (mixed) return `Mixed breed (${mixed[1].toLowerCase()})`;
+  if (/^mix$/i.test(b)) return 'Mixed breed';
+  return b.split(',').map(s => s.trim()).reverse().join(' ');
+}
+function titleName(n) {
+  n = n.trim();
+  return n === n.toUpperCase() || n === n.toLowerCase() ? n.toLowerCase().replace(/(^|[\s\-'])\S/g, c => c.toUpperCase()) : n;
+}
+
+
+let ALL = [];
+function countBy(rows, keyFn) {
+  const m = new Map();
+  for (const r of rows) { const k = keyFn(r); if (k == null || k === '') continue; m.set(k, (m.get(k) || 0) + 1); }
+  return m;
+}
+const noun = (sp, n) => sp === 'All' ? (n === 1 ? 'pet' : 'pets') : (n === 1 ? sp.toLowerCase() : PLURAL[sp].toLowerCase());
+
+// ---------- how rare is your pet ----------
+function rareTier(n) {
+  if (n === 0) return ['None on record', 'Yours would be the first one in the license data.'];
+  if (n === 1) return ['One of a kind', 'There may be no other pet quite like yours here.'];
+  if (n < 10) return ['Rare', 'Only a handful of twins around town.'];
+  if (n < 50) return ['Uncommon', 'A few twins around town.'];
+  if (n < 250) return ['Common', 'Plenty of lookalikes around town.'];
+  return ['Very common', 'One of the most familiar combinations in Seattle.'];
+}
+function fillSelect(el, opts, keep) {
+  el.innerHTML = opts.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('');
+  if (keep != null && opts.some(o => o[0] === keep)) el.value = keep;
+}
+function renderBreedOptions(keep) {
+  const sp = $('spSel').value;
+  const rows = sp === 'All' ? ALL : ALL.filter(r => r.s === sp);
+  const breeds = [...countBy(rows, r => r.b).entries()].sort((a, b) => b[1] - a[1]);
+  fillSelect($('breedSel'), [['', 'Any breed'], ...breeds.map(([b, c]) => [b, `${b} (${fmt(c)})`])], keep);
+}
+function renderRare() {
+  const sp = $('spSel').value, br = $('breedSel').value, z = $('zipSel2').value;
+  const n = ALL.filter(r => (sp === 'All' || r.s === sp) && (!br || r.b === br) && (!z || r.z === z)).length;
+  const [label, flavor] = rareTier(n);
+  $('rareNum').textContent = fmt(n);
+  const what = br ? `${esc(br)} ${noun(sp, n)}` : (sp === 'All' ? noun('All', n) : noun(sp, n));
+  $('rareWhat').innerHTML = `${what} in ${z ? esc(zipLabel(z)) : 'all of Seattle'}`;
+  $('rareBadge').textContent = label;
+  $('rareBadge').dataset.tier = label.toLowerCase().replace(/\s+/g, '-');
+  $('rareOdds').innerHTML = n ? `roughly <b>1 in ${fmt(Math.round(ALL.length / n))}</b> licensed Seattle pets` : 'not one among Seattle\'s licensed pets';
+  $('rareFlavor').textContent = flavor;
+  const q = new URLSearchParams(location.search);
+  ['sp', 'breed', 'zip'].forEach(k => q.delete(k));
+  if (sp !== 'Dog') q.set('sp', sp); if (br) q.set('breed', br); if (z) q.set('zip', z);
+  history.replaceState(null, '', '?' + q.toString() + location.hash);
+}
+function setupRare() {
+  const q = new URLSearchParams(location.search);
+  const sps = countBy(ALL, r => r.s);
+  fillSelect($('spSel'), [['All', 'Any pet'], ...SPECIES.filter(s => sps.get(s)).map(s => [s, `${PLURAL[s]} (${fmt(sps.get(s))})`])], q.get('sp') || 'Dog');
+  renderBreedOptions(q.get('breed') ?? 'Labrador Retriever');
+  const zips = [...countBy(ALL, r => r.z).entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  fillSelect($('zipSel2'), [['', 'All of Seattle'], ...zips.map(([z]) => [z, zipLabel(z)])], q.get('zip') || '');
+  $('rareNote').textContent = `Counted across all ${fmt(ALL.length)} licensed Seattle pets. Exact counts, not estimates.`;
+  $('spSel').onchange = () => { renderBreedOptions(''); renderRare(); };
+  $('breedSel').onchange = renderRare;
+  $('zipSel2').onchange = renderRare;
+  renderRare();
+}
+
+// ---------- look up any name ----------
+function bars(items, max) {
+  return `<div class="mini-bars">${items.map(([k, c]) => `<div class="mb"><span class="k">${esc(k)}</span><span class="c">${fmt(c)}</span><span class="t"><span style="width:${Math.max(2, c / max * 100)}%"></span></span></div>`).join('')}</div>`;
+}
+function lookup(name) {
+  name = (name || '').trim();
+  if (!name) return;
+  $('lookInput').value = name;
+  const key = name.toLowerCase();
+  const rows = ALL.filter(r => r.nk === key);
+  const display = rows[0] ? rows[0].n : titleName(name);
+  const q = new URLSearchParams(location.search); q.set('name', display);
+  history.replaceState(null, '', '?' + q.toString() + '#lookup');
+  if (!rows.length) {
+    $('lookCard').innerHTML = `<h3>${esc(display)}</h3><p class="sum">No licensed pet in Seattle is named ${esc(display)} yet. Yours would be the first.</p>
+      <a class="linkbtn" href="adopt.html">Find a pet that needs a name →</a>`;
+    return;
+  }
+  const sp = countBy(rows, r => r.s);
+  const parts = SPECIES.filter(s => sp.get(s)).map(s => `${fmt(sp.get(s))} ${noun(s, sp.get(s))}`);
+  const breeds = [...countBy(rows, r => r.b).entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+  const zips = [...countBy(rows, r => r.z).entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([z, c]) => [hood(z) || z, c]);
+  const rank = [...countBy(ALL, r => r.nk).values()].filter(c => c > rows.length).length + 1;
+  $('lookCard').innerHTML = `<h3>${esc(display)}</h3>
+    <p class="sum">There ${rows.length === 1 ? 'is' : 'are'} <b>${fmt(rows.length)}</b> licensed ${noun('All', rows.length)} named ${esc(display)} in Seattle${parts.length > 1 ? ': ' + parts.join(', ') : ''}. That ranks <b>#${fmt(rank)}</b> among ${fmt(new Set(ALL.map(r => r.nk).filter(Boolean)).size)} names.</p>
+    <div class="cols">
+      <div><h4>Top breeds</h4>${bars(breeds, breeds[0][1])}</div>
+      <div><h4>Where they live</h4>${bars(zips, zips[0][1])}</div>
+    </div>
+    <div class="links"><a class="linkbtn" href="adopt.html">Find adoptable pets →</a><a class="linkbtn" href="./?name=${encodeURIComponent(display)}">See how ${esc(display)} ranks on the main page →</a></div>`;
+}
+function setupLookup() {
+  const counts = [...countBy(ALL, r => r.nk).entries()].sort((a, b) => b[1] - a[1]);
+  const disp = new Map(ALL.map(r => [r.nk, r.n]));
+  $('lookList').innerHTML = counts.slice(0, 400).map(([k]) => `<option value="${esc(disp.get(k))}">`).join('');
+  const tries = ['Luna', 'Mochi', 'Rainier', 'Pickles', 'Kevin'];
+  $('lookTry').innerHTML = 'Try: ' + tries.map(t => `<button type="button" class="chip" data-n="${t}">${t}</button>`).join('');
+  $('lookTry').querySelectorAll('.chip').forEach(b => b.onclick = () => lookup(b.dataset.n));
+  $('lookForm').onsubmit = e => { e.preventDefault(); lookup($('lookInput').value); };
+  const q = new URLSearchParams(location.search).get('name');
+  if (q) lookup(q.slice(0, 60));
+}
+
+async function load() {
+  try {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    ALL = (await res.json()).map(r => {
+      const n = r.animal_s_name ? titleName(r.animal_s_name) : '';
+      return { n, nk: n.toLowerCase(), s: SPECIES.includes(r.species) ? r.species : 'Dog', b: cleanBreed(r.primary_breed), z: (r.zip_code || '').slice(0, 5) };
+    });
+    setupRare(); setupLookup();
+    if (location.hash === '#lookup') $('lookup').scrollIntoView();
+  } catch (e) {
+    $('rareNote').innerHTML = `Couldn't reach Seattle's open data portal (${esc(e.message)}). <button class="linkbtn" onclick="location.reload()">Try again</button>`;
+    $('rareNum').textContent = '–';
+  }
+}
+load();
+</script>
+</body>
+</html>
