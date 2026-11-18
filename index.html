@@ -3,23 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pets of Seattle</title>
-<meta name="description" content="Every licensed pet in Seattle: what they're called, what breeds they are, and where in the city they live.">
+<title>Pets of Seattle: Seattle's Most Popular Pet Names & Breeds</title>
+<meta name="description" content="Every licensed pet in Seattle: the most popular dog and cat names, top breeds, and pets by neighborhood. Check how many Seattle pets share your pet's name.">
 <link rel="canonical" href="https://petsofseattle.org/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Pets of Seattle">
 <meta property="og:url" content="https://petsofseattle.org/">
 <meta property="og:title" content="Pets of Seattle: how common is your pet's name?">
-<meta property="og:description" content="Every licensed pet in Seattle: the top names, breeds and neighborhoods. Check how many pets share your pet's name.">
+<meta property="og:description" content="Every licensed pet in Seattle: the most popular dog and cat names, top breeds, and pets by neighborhood. Check how many Seattle pets share your pet's name.">
 <meta property="og:image" content="https://petsofseattle.org/art/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Watercolor drawings of a yellow Labrador and a brown tabby cat in front of the Space Needle and Mount Rainier">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="art/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="art/apple-touch-icon.png">
+<meta name="theme-color" content="#173d2e">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://petsofseattle.org/#website", "name": "Pets of Seattle", "url": "https://petsofseattle.org/", "inLanguage": "en-US"}, {"@type": "Dataset", "name": "Seattle pet licenses, explored", "description": "Names, species, breeds and ZIP codes of every pet with an active City of Seattle license, summarized by Pets of Seattle.", "url": "https://petsofseattle.org/", "isBasedOn": "https://data.seattle.gov/City-Administration/Seattle-Pet-Licenses/jguv-t9rb", "spatialCoverage": {"@type": "Place", "name": "Seattle, Washington"}, "keywords": ["Seattle pet names", "popular dog names", "popular cat names", "dog breeds", "pet licenses"]}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=25">
 </head>
 <body>
 <div id="loading"><div><div class="paws"><span>🐾</span><span>🐾</span><span>🐾</span></div><p id="loadmsg">Fetching every licensed pet in Seattle…</p></div></div>
@@ -46,7 +50,7 @@
 <header class="wrap hero" id="top">
   <div class="hero-text">
     <h1>Seattle,<br>by its pets</h1>
-    <p class="lede" id="heroLede">Every dog, cat, goat and pig with an active Seattle license: what they're called, what breeds they are, and where in the city they live.</p>
+    <p class="lede" id="heroLede">Every pet with an active Seattle license, all <b>38,413</b> of them: what they're called (<b>11,911</b> different names), what breeds they are (<b>344</b>), and where in the city they live (<b>159</b> ZIP codes).</p>
     <div class="statrow" id="tiles"></div>
   </div>
 
@@ -76,7 +80,7 @@
         </div></div>
       </figure>
     </div>
-    <p class="caption hero-cap" id="tagCaption"></p>
+    <p class="caption hero-cap" id="tagCaption"><b>Luna</b>, the city's most popular name for dogs and cats. The most popular dog is a <b>Labrador Retriever</b>; the most popular cat, a <b>Domestic Shorthair</b>.</p>
   </div>
   <form class="namebar" id="nameForm" autocomplete="off" role="search">
     <label class="namebar-label" for="nameInput">How common is your pet's name?</label>
@@ -105,7 +109,7 @@
 <div class="wrap names-intro" id="names">
   <div class="sec-head">
     <h2>What Seattle calls its pets</h2>
-    <p class="lede" id="namesLede"></p>
+    <p class="lede" id="namesLede"><b>Luna</b> is the most popular name in Seattle, worn by <b>358</b> pets. Then Lucy, Charlie, Daisy. But most owners go their own way: <b>70%</b> of the 11,911 names in use belong to exactly one pet.</p>
   </div>
 </div>
 
@@ -125,7 +129,7 @@
       <div class="panel">
         <h3>Top 20 names</h3>
         <div class="legend" id="nameLegend"></div>
-        <div class="bars" id="nameBars"></div>
+        <div class="bars" id="nameBars"><ol class="static-top"><li>Luna <span>358</span></li><li>Lucy <span>220</span></li><li>Charlie <span>219</span></li><li>Daisy <span>180</span></li><li>Milo <span>164</span></li><li>Bella <span>150</span></li><li>Penny <span>149</span></li><li>Rosie <span>149</span></li><li>Poppy <span>143</span></li><li>Leo <span>138</span></li><li>Pepper <span>136</span></li><li>Coco <span>129</span></li><li>Ruby <span>127</span></li><li>Oliver <span>126</span></li><li>Lily <span>126</span></li><li>Max <span>125</span></li><li>Scout <span>120</span></li><li>Lola <span>113</span></li><li>Buddy <span>113</span></li><li>Ollie <span>111</span></li></ol></div>
       </div>
       <div class="aside">
         <h3>Name themes</h3>
@@ -141,7 +145,7 @@
   <section class="sec" id="breeds">
     <div class="sec-head">
       <h2>Labs, doodles and a lot of shorthairs</h2>
-      <p class="lede" id="breedsLede"></p>
+      <p class="lede" id="breedsLede">The <b>Labrador Retriever</b> is the top dog breed in Seattle with <b>2,273</b> licensed, while the <b>Domestic Shorthair</b> leads the cats with <b>6,972</b>. <b>54%</b> of pets are listed as some kind of mix, and about <b>3,347</b> dogs look like doodles (part poodle).</p>
     </div>
     <div class="grid2">
       <div class="panel"><h3 id="breedTitle1">Top dog breeds</h3><div class="bars" id="breedBars1"></div></div>
@@ -153,7 +157,7 @@
   <section class="sec" id="hoods">
     <div class="sec-head">
       <h2>Where the pets live</h2>
-      <p class="lede" id="hoodsLede"></p>
+      <p class="lede" id="hoodsLede"><b>98115</b> (Wedgwood / Ravenna / View Ridge) has more licensed pets than any other ZIP code: <b>3,500</b>. North Seattle dominates the top of the list, with 98103 (Fremont / Wallingford / Green Lake) and 98117 (Crown Hill / North Ballard) close behind.</p>
     </div>
     <div class="split">
       <div class="panel">
@@ -186,7 +190,7 @@
   <section class="sec" id="licenses">
     <div class="sec-head">
       <h2>When they got licensed</h2>
-      <p class="lede" id="timeLede"></p>
+      <p class="lede" id="timeLede">This data only includes licenses that are still active, so it skews recent: <b>76%</b> of today's active licenses were issued in 2026. The busiest month was <b>May 2026</b>, with <b>3,725</b> new licenses.</p>
     </div>
     <div class="split">
       <div class="panel"><h3>Active licenses by issue month</h3><div id="timeline"></div></div>
@@ -220,12 +224,12 @@
 <section class="wrap report" aria-labelledby="reportTitle">
   <h2 id="reportTitle">In this report</h2>
   <div class="report-grid">
-    <a class="report-row" href="#names"><b>Names</b><span id="rpNames">What Seattle calls its pets.</span><i aria-hidden="true">→</i></a>
-    <a class="report-row" href="#breeds"><b>Breeds</b><span id="rpBreeds">The most common dog and cat breeds.</span><i aria-hidden="true">→</i></a>
-    <a class="report-row" href="#hoods"><b>Neighborhoods</b><span id="rpHoods">Where in the city the pets live.</span><i aria-hidden="true">→</i></a>
-    <a class="report-row" href="#vs"><b>Dogs vs. cats</b><span id="rpVs">The names that lean hardest one way.</span><i aria-hidden="true">→</i></a>
-    <a class="report-row" href="#licenses"><b>Licenses</b><span id="rpLic">When today's active licenses were issued.</span><i aria-hidden="true">→</i></a>
-    <a class="report-row" href="#meet"><b>Meet a pet</b><span id="rpMeet">A random licensed pet, plus every goat and pig.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#names"><b>Names</b><span id="rpNames">Luna is the most popular name, worn by 358 pets.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#breeds"><b>Breeds</b><span id="rpBreeds">The Labrador Retriever leads the dogs; the Domestic Shorthair leads the cats.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#hoods"><b>Neighborhoods</b><span id="rpHoods">98115 · Wedgwood / Ravenna / View Ridge has the most licensed pets: 3,500.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#vs"><b>Dogs vs. cats</b><span id="rpVs">25,617 dogs to 12,782 cats, about 2.0 to 1. Some names lean hard one way.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#licenses"><b>Licenses</b><span id="rpLic">76% of active licenses were issued in 2026.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#meet"><b>Meet a pet</b><span id="rpMeet">A random licensed pet, plus all 11 goats and 3 pigs.</span><i aria-hidden="true">→</i></a>
     <a class="report-row" href="your-pet.html"><b>Your pet</b><span>How rare is your pet? Match its species, breed and neighborhood, or look up any name.</span><i aria-hidden="true">→</i></a>
     <a class="report-row" href="adopt.html"><b>Adopt</b><span>Dogs, cats and rabbits waiting for a home near Seattle.</span><i aria-hidden="true">→</i></a>
   </div>

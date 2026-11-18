@@ -437,3 +437,7 @@ a.pet-name { display: block; text-decoration: none; }
   .card-dlg-body { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .card-preview { max-width: 260px; margin: 0 auto; width: 100%; }
 }
+
+/* pre-rendered top names, replaced by the live chart */
+.static-top { margin: 0; padding-left: 22px; columns: 2; font-size: 15px; color: var(--text-2); }
+.static-top span { color: var(--muted); }
