@@ -1,0 +1,26 @@
+# Pets of Seattle
+
+> Pets of Seattle (https://petsofseattle.org) explores every pet with an active City of Seattle license: the most popular pet names, dog and cat breeds, and how many pets live in each Seattle ZIP code. Data comes from the City of Seattle's public Seattle Pet Licenses dataset and is loaded live on each visit. Figures below are as of November 18, 2026 (newest license in the data: October 6, 2026).
+
+## Key facts
+
+- Licensed pets in Seattle: 38,413 (25,617 dogs, 12,782 cats, 11 goats, 3 pigs).
+- Most popular pet name: Luna (358 pets: 247 dogs, 111 cats). Next: Lucy 220, Charlie 219, Daisy 180, Milo 164.
+- Most popular dog names: Luna 247, Charlie 176, Lucy 161.
+- Most popular cat names: Luna 111, Lucy 59, Lily 51.
+- Most common dog breeds: Labrador Retriever 2,273; Short Coat Chihuahua 1,344; Golden Retriever 1,276.
+- Most common cat breeds: Domestic Shorthair 6,972; American Shorthair 1,498; Domestic Medium Hair 1,440.
+- ZIP codes with the most licensed pets: 98115 (Wedgwood / Ravenna / View Ridge) 3,500; 98103 (Fremont / Wallingford / Green Lake) 3,138; 98117 (Crown Hill / North Ballard) 2,555.
+- 11,911 distinct pet names are in use; 70% of them belong to exactly one pet.
+- Counts cover licensed pets only, so Seattle's true pet population is larger.
+
+## Pages
+
+- [Home](https://petsofseattle.org/): top names, breeds, neighborhoods, dogs vs. cats, license timeline, and a pet-name checker.
+- [Your pet](https://petsofseattle.org/your-pet.html): count pets matching a species, breed and ZIP code, or look up any name.
+- [Adopt](https://petsofseattle.org/adopt.html): dogs, cats and rabbits up for adoption near Seattle, live from King County's shelter data.
+
+## Source data
+
+- [Seattle Pet Licenses, City of Seattle Open Data](https://data.seattle.gov/City-Administration/Seattle-Pet-Licenses/jguv-t9rb)
+- [King County adoptable animals, King County Open Data](https://data.kingcounty.gov/)
