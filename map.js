@@ -1,7 +1,7 @@
 /* Neighborhood map for Pets of Seattle.
    ZIP shapes: data/seattle-zips.json (US Census ZCTAs trimmed to Seattle's city limits and shoreline, 2020 population).
    Uses globals from the main page script: ALL, NAME_INDEX, state, countBy, hood, esc, fmt, PLURAL, setZip, checkName, track. */
-const MAP = { geo: null, stats: null, view: 'lean', sel: null };
+const MAP = { geo: null, stats: null, view: 'lean', sel: null, pick: null };
 fetch('data/seattle-zips.json').then(r => r.json()).then(g => { MAP.geo = g; if (ALL.length) renderMap(); }).catch(() => { $('mapBlock').hidden = true; });
 const mapZip = z => (MAP.geo && MAP.geo.merge[z]) || z;
 const isDark = () => document.documentElement.dataset.theme === 'dark' ||
@@ -36,6 +36,8 @@ function mapPalette() {
     lean: [catEnd, mix(N, catMid, .72), mix(N, catMid, .38), N, mix(N, dogMid, .38), mix(N, dogMid, .72), dogEnd],
     // one hue, light -> dark (dark mode: near-surface -> bright)
     rate: [.12, .32, .52, .72, .92].map(t => dark ? mix('#2c3a33', '#8fe0b8', t) : mix('#e4f2eb', '#0b5137', t)),
+    // the checked name: one violet hue, so it never reads as dog blue or cat orange
+    pick: [.14, .34, .54, .74, .94].map(t => dark ? mix('#312d3b', '#c9b2f2', t) : mix('#efebf7', '#43277a', t)),
     breedHue: dark ? '#8fe0b8' : '#1baf7a', nameHue: dark ? '#86b6ef' : '#2a78d6',
     hatch: dark ? '#59605a' : '#c9c5b8'
   };
@@ -92,6 +94,12 @@ function renderMap() {
   const rateCuts = [q(.2), q(.4), q(.6), q(.8)];
   const breeds = Object.fromEntries(facts.map(f => [f.z, view === 'breed' ? signatureBreed(f.z, sp) : null]));
   const noun = sp === 'All' ? 'pets' : PLURAL[sp].toLowerCase();
+  const pk = view === 'pick' && MAP.pick ? MAP.pick : null;
+  if (pk) for (const f of facts) { f.pc = f.rows.filter(r => r.nk === pk.nk).length; f.pr = f.n >= 150 ? f.pc / f.n * 1000 : null; }
+  const pMin = pk && Math.max(0, ...facts.map(f => f.pc || 0)) >= 15 ? 5 : 2;   // popular names need a real cluster to rank
+  const prs = pk ? facts.filter(f => f.pr).map(f => f.pr).sort((a, b) => a - b) : [];
+  const pq = p => prs[Math.min(prs.length - 1, Math.floor(p * prs.length))];
+  const pickCuts = prs.length >= 5 ? [pq(.2), pq(.4), pq(.6), pq(.8)] : prs.length ? [prs[0], prs[0], prs.at(-1), prs.at(-1)] : [];
 
   const fillFor = f => {
     if (view === 'lean') {
@@ -100,19 +108,21 @@ function renderMap() {
       return P.lean[i + 3];
     }
     if (view === 'rate') { if (f.rate == null) return 'url(#mapHatch)'; let i = 0; while (i < 4 && f.rate > rateCuts[i]) i++; return P.rate[i]; }
+    if (view === 'pick') { if (f.pr == null) return 'url(#mapHatch)'; if (!f.pc) return P.land; let i = 0; while (i < 4 && f.pr > pickCuts[i]) i++; return P.pick[i]; }
     if (view === 'breed') { const b = breeds[f.z]; return b ? mix(P.land, P.breedHue, Math.min(.7, .18 + (b.lift - 1.4) / 4)) : P.land; }
     return f.top ? mix(P.land, P.nameHue, .16) : P.land;
   };
   const lineFor = f => {
     if (view === 'lean') return f.dogShare == null ? 'Too few dogs and cats to compare' : `${Math.round(f.dogShare * 100)}% dogs, ${Math.round((1 - f.dogShare) * 100)}% cats`;
     if (view === 'rate') return f.rate == null ? (f.partial ? 'Mostly outside Seattle, so no rate' : 'Too few residents for a rate') : `<b>${Math.round(f.rate)}</b> licensed ${noun} per 1,000 residents`;
+    if (view === 'pick') return f.pr == null ? 'Too few pets to compare' : f.pc ? `<b>${fmt(f.pc)}</b> named ${esc(pk.display)}, about 1 in ${fmt(Math.round(f.n / f.pc))}` : `No ${esc(pk.display)} here yet`;
     if (view === 'name') return f.top ? `Top name: <b>${esc(f.top.name)}</b> (${fmt(f.top.n)})` : 'No repeat names yet';
     const b = breeds[f.z]; return b ? `<b>${esc(b.breed)}</b>, ${b.lift.toFixed(1)}× the city rate` : 'No standout breed';
   };
   const tipFor = f => `<b>${f.z}</b>${hood(f.z) ? ' · ' + esc(hood(f.z)) : ''}<div>${lineFor(f)}</div><div style="opacity:.75">${fmt(f.n)} licensed ${noun}${f.partial ? ' in the Seattle part' : ''}</div>`;
   const plain = h => h.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-  const labelFor = f => view === 'name' ? (f.top ? f.top.name : '') : view === 'breed' ? (breeds[f.z] ? breeds[f.z].breed : '') : '';
+  const labelFor = f => view === 'pick' ? (f.pc ? fmt(f.pc) : '') : view === 'name' ? (f.top ? f.top.name : '') : view === 'breed' ? (breeds[f.z] ? breeds[f.z].breed : '') : '';
   const wrap = t => { const lines = ['']; for (const w of t.split(' ')) { const next = (lines.at(-1) + ' ' + w).trim(); if (next.length > 11 && lines.at(-1)) lines.push(w); else lines[lines.length - 1] = next; } return lines; };
 
   const svg = $('cityMap');
@@ -121,7 +131,7 @@ function renderMap() {
     const g = geo.zips[f.z], sel = state.zip && mapZip(state.zip) === f.z;
     return `<path class="zip${sel ? ' sel' : ''}${MAP.sel === f.z ? ' focus' : ''}" d="${g.d}" fill="${fillFor(f)}" data-z="${f.z}" data-tip="${esc(tipFor(f))}" tabindex="0" role="button" aria-label="${esc(f.z + ' ' + (hood(f.z) || '') + ': ' + plain(lineFor(f)))}"></path>`;
   }).join('');
-  const labels = (view === 'name' || view === 'breed') ? facts.map(f => {
+  const labels = (view === 'name' || view === 'breed' || view === 'pick') ? facts.map(f => {
     const g = geo.zips[f.z], t = labelFor(f);
     if (!t || g.areaU < (view === 'breed' ? 24000 : 14000)) return '';
     const fs = Math.max(26, Math.min(view === 'breed' ? 36 : 44, Math.sqrt(g.areaU) / (view === 'breed' ? 7 : 6))), fill = fillFor(f);
@@ -137,6 +147,9 @@ function renderMap() {
     p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMapZip(p.dataset.z, true); } });
   });
 
+  let pb = $('mapView').querySelector('[data-v="pick"]');
+  if (MAP.pick && !pb) { pb = document.createElement('button'); pb.type = 'button'; pb.setAttribute('role', 'radio'); pb.dataset.v = 'pick'; $('mapView').prepend(pb); }
+  if (pb) { pb.hidden = !MAP.pick; if (MAP.pick) pb.textContent = `Where's ${MAP.pick.display}?`; }
   $('mapView').querySelectorAll('button').forEach(b => { const on = b.dataset.v === view; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
 
   // legend
@@ -148,6 +161,12 @@ function renderMap() {
     const e = [rates[0], ...rateCuts, rates.at(-1)].map(v => Math.round(v));
     lg = `<div class="lg-row">${P.rate.map((c, i) => sw(c, `${e[i]}–${e[i + 1]}`)).join('')}${sw(`repeating-linear-gradient(45deg, ${P.land} 0 4px, ${P.hatch} 4px 7px)`, 'Mostly outside Seattle')}</div>
       <div class="lg-cap">Licensed ${noun} per 1,000 residents (2020 Census population)</div>`;
+  } else if (view === 'pick') {
+    const e = prs.length ? [prs[0], ...pickCuts, prs.at(-1)].map(v => v < 10 ? v.toFixed(1) : Math.round(v)) : [];
+    const hot = facts.filter(f => f.pr && f.pc >= pMin).sort((a, b) => b.pr - a.pr)[0];
+    lg = prs.length ? `<div class="lg-row">${P.pick.map((c, i) => sw(c, `${e[i]}–${e[i + 1]}`)).join('')}${sw(P.land, 'None yet')}</div>
+      <div class="lg-cap">${noun[0].toUpperCase() + noun.slice(1)} named ${esc(pk.display)} per 1,000 licensed ${noun}. ${hot ? `Most concentrated in <b>${esc(hood(hot.z) || hot.z)}</b>.` : ''}</div>`
+      : `<div class="lg-cap">No licensed ${noun} named ${esc(pk.display)} in Seattle yet. Yours would be the first.</div>`;
   } else if (view === 'name') {
     const wins = countBy(facts.filter(f => f.top), f => f.top.name), [leader, lw] = [...wins.entries()].sort((a, b) => b[1] - a[1])[0] || [];
     lg = `<div class="lg-cap">${leader ? `<b>${esc(leader)}</b> is the top ${sp === 'All' ? 'pet' : sp.toLowerCase()} name in ${lw} of ${facts.length} neighborhoods. ` : ''}Tap a neighborhood for its top five.</div>`;
@@ -165,6 +184,10 @@ function renderMap() {
   } else if (view === 'rate') {
     title = `Most licensed ${noun} per resident`;
     list = facts.filter(f => f.rate != null).sort((a, b) => b.rate - a.rate).slice(0, 6).map(f => [f, `${Math.round(f.rate)} per 1,000`]);
+  } else if (view === 'pick') {
+    title = `Where ${pk.display} is most popular`;
+    list = facts.filter(f => f.pr && f.pc >= pMin).sort((a, b) => b.pr - a.pr).slice(0, 6).map(f => [f, `${fmt(f.pc)} · 1 in ${fmt(Math.round(f.n / f.pc))}`]);
+    if (!list.length) list = facts.filter(f => f.pc).sort((a, b) => b.pc - a.pc).slice(0, 6).map(f => [f, `${fmt(f.pc)}`]);
   } else if (view === 'name') {
     title = 'Top name in the biggest pet neighborhoods';
     list = big.filter(f => f.top).sort((a, b) => b.n - a.n).slice(0, 6).map(f => [f, `${esc(f.top.name)} · ${fmt(f.top.n)}`]);
@@ -212,6 +235,19 @@ function selectMapZip(z, fromKey) {
   renderMap();
   if (fromKey) { const p = $('cityMap').querySelector(`.zip[data-z="${z}"]`); if (p) p.focus(); }
   if (MAP.sel && matchMedia('(max-width: 860px)').matches) $('mapDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+// called by the name checker: adds a "Where's Luna?" view, and can jump to it
+function setMapPick(nk, display) {
+  const was = MAP.pick && MAP.pick.nk;
+  MAP.pick = nk ? { nk, display } : null;
+  if (!MAP.pick && MAP.view === 'pick') MAP.view = 'lean';
+  if (was !== nk) renderMap();
+}
+function showNameOnMap() {
+  if (!MAP.pick) return;
+  track('map-name');
+  MAP.view = 'pick'; MAP.sel = null; renderMap();
+  $('mapBlock').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 $('mapView').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; MAP.view = b.dataset.v; track('map-view-' + MAP.view); renderMap(); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => renderMap());

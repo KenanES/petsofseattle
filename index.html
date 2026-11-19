@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=38">
 <script src="track.js"></script>
 </head>
 <body>
@@ -38,8 +38,8 @@
     </a>
     <div class="nav-links">
       <a href="#names">Names</a>
+      <a href="#hoods">Map</a>
       <a href="#breeds">Breeds</a>
-      <a href="#hoods">Neighborhoods</a>
       <a href="#vs">Dogs vs. cats</a>
       <a href="#licenses">Licenses</a>
       <a href="your-pet.html">Your pet</a>
@@ -92,6 +92,7 @@
     </div>
     <datalist id="nameList"></datalist>
     <div class="suggest" id="suggest"></div>
+    <a class="map-teaser" href="#hoods" id="mapTeaser"><span class="mt-ico" aria-hidden="true">🗺️</span><span><b>Explore the neighborhood map.</b> Dog neighborhoods vs. cat neighborhoods, and where your pet's name is most popular.</span><i aria-hidden="true">→</i></a>
   </form>
 </header>
 
@@ -143,21 +144,9 @@
     </div>
   </section>
 
-  <section class="sec" id="breeds">
-    <div class="sec-head">
-      <h2>Labs, doodles and a lot of shorthairs</h2>
-      <p class="lede" id="breedsLede">The <b>Labrador Retriever</b> is the top dog breed in Seattle with <b>2,273</b> licensed, while the <b>Domestic Shorthair</b> leads the cats with <b>6,972</b>. <b>54%</b> of pets are listed as some kind of mix, and about <b>3,347</b> dogs look like doodles (part poodle).</p>
-    </div>
-    <div class="grid2">
-      <div class="panel"><h3 id="breedTitle1">Top dog breeds</h3><div class="bars" id="breedBars1"></div></div>
-      <div class="panel"><h3 id="breedTitle2">Top cat breeds</h3><div class="bars" id="breedBars2"></div></div>
-    </div>
-    <ul class="facts" id="breedStats" style="margin-top:28px"></ul>
-  </section>
-
   <section class="sec" id="hoods">
     <div class="sec-head">
-      <h2>Where the pets live</h2>
+      <h2>Seattle, neighborhood by neighborhood</h2>
       <p class="lede" id="hoodsLede"><b>98115</b> (Wedgwood / Ravenna / View Ridge) has more licensed pets than any other ZIP code: <b>3,500</b>. North Seattle dominates the top of the list, with 98103 (Fremont / Wallingford / Green Lake) and 98117 (Crown Hill / North Ballard) close behind.</p>
     </div>
     <div class="map-block" id="mapBlock">
@@ -199,6 +188,18 @@
         <p>Neighborhood names are approximate labels for each ZIP code, not official city boundaries.</p>
       </div>
     </div>
+  </section>
+
+  <section class="sec" id="breeds">
+    <div class="sec-head">
+      <h2>Labs, doodles and a lot of shorthairs</h2>
+      <p class="lede" id="breedsLede">The <b>Labrador Retriever</b> is the top dog breed in Seattle with <b>2,273</b> licensed, while the <b>Domestic Shorthair</b> leads the cats with <b>6,972</b>. <b>54%</b> of pets are listed as some kind of mix, and about <b>3,347</b> dogs look like doodles (part poodle).</p>
+    </div>
+    <div class="grid2">
+      <div class="panel"><h3 id="breedTitle1">Top dog breeds</h3><div class="bars" id="breedBars1"></div></div>
+      <div class="panel"><h3 id="breedTitle2">Top cat breeds</h3><div class="bars" id="breedBars2"></div></div>
+    </div>
+    <ul class="facts" id="breedStats" style="margin-top:28px"></ul>
   </section>
 
   <section class="sec" id="vs">
@@ -286,8 +287,8 @@
   <h2 id="reportTitle">In this report</h2>
   <div class="report-grid">
     <a class="report-row" href="#names"><b>Names</b><span id="rpNames">Luna is the most popular name, worn by 358 pets.</span><i aria-hidden="true">→</i></a>
+    <a class="report-row" href="#hoods"><b>Map</b><span id="rpHoods">98115 · Wedgwood / Ravenna / View Ridge has the most licensed pets: 3,500.</span><i aria-hidden="true">→</i></a>
     <a class="report-row" href="#breeds"><b>Breeds</b><span id="rpBreeds">The Labrador Retriever leads the dogs; the Domestic Shorthair leads the cats.</span><i aria-hidden="true">→</i></a>
-    <a class="report-row" href="#hoods"><b>Neighborhoods</b><span id="rpHoods">98115 · Wedgwood / Ravenna / View Ridge has the most licensed pets: 3,500.</span><i aria-hidden="true">→</i></a>
     <a class="report-row" href="#vs"><b>Dogs vs. cats</b><span id="rpVs">25,617 dogs to 12,782 cats, about 2.0 to 1. Some names lean hard one way.</span><i aria-hidden="true">→</i></a>
     <a class="report-row" href="#licenses"><b>Licenses</b><span id="rpLic">76% of active licenses were issued in 2026.</span><i aria-hidden="true">→</i></a>
     <a class="report-row" href="#meet"><b>Meet a pet</b><span id="rpMeet">A random licensed pet, plus all 11 goats and 3 pigs.</span><i aria-hidden="true">→</i></a>
@@ -647,9 +648,10 @@ function lookupName() {
     <div class="scale" aria-hidden="true"><span class="flag" style="left:${pos}%">${esc(display)}</span><span class="mark" style="left:${pos}%"></span></div>
     <div class="scale-labels"><span>One of a kind</span><span>${esc(NAME_INDEX.get(sc.top[0]).display)} (${fmt(maxN)}, the most popular)</span></div>
     <div class="result-grid">${[split, local, hot, breedHtml, lookHtml].filter(Boolean).join('')}</div>
-    <div class="share"><button class="checkbtn sharebtn" id="shareCard">📸 Make ${esc(display)}'s card</button><button class="chip" id="copyLink">🔗 Copy link to this result</button><a class="chip" href="#newsletter">📬 Get Seattle&rsquo;s rankings 4× a year</a><span class="val" id="copyMsg"></span></div>`;
+    <div class="share"><button class="checkbtn sharebtn" id="shareCard">📸 Make ${esc(display)}'s card</button>${n ? `<button class="chip" id="seeMap">🗺️ Where ${esc(display)} lives in Seattle</button>` : ''}<button class="chip" id="copyLink">🔗 Copy link to this result</button><a class="chip" href="#newsletter">📬 Get Seattle&rsquo;s rankings 4× a year</a><span class="val" id="copyMsg"></span></div>`;
   CARD = { display, n, who, label, rank, distinct: sc.distinct, sp };
   $('shareCard').onclick = openCardMaker;
+  if (typeof setMapPick === 'function') { setMapPick(n ? q : null, display); if ($('seeMap')) $('seeMap').onclick = showNameOnMap; }
   out.querySelectorAll('[data-n]').forEach(b => b.onclick = () => { $('nameInput').value = b.dataset.n; lookupName(); });
   $('copyLink').onclick = async () => {
     try { await navigator.clipboard.writeText(location.href); $('copyMsg').textContent = 'Copied!'; }
@@ -689,7 +691,7 @@ $('nameInput').addEventListener('input', () => {
   clearTimeout(nameT);
   nameT = setTimeout(() => { if ($('nameInput').value.trim()) lookupName(); }, 150);
 });
-$('closeFinder').onclick = () => { $('finderSec').hidden = true; syncUrl(''); resetTag(); };
+$('closeFinder').onclick = () => { $('finderSec').hidden = true; syncUrl(''); resetTag(); if (typeof setMapPick === 'function') setMapPick(null); };
 // ---------- breeds ----------
 function breedBars(el, rows, sp) {
   const items = [...countBy(rows, r => r.b).entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
@@ -1121,7 +1123,7 @@ async function load() {
 }
 load();
 </script>
-<script src="map.js"></script>
+<script src="map.js?v=2"></script>
 <script src="newsletter.js"></script>
 </body>
 </html>
