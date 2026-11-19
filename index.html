@@ -538,9 +538,6 @@ function lookupName() {
   const n = rows.length;
   const [icon, label] = tier(n);
   const rank = n ? 1 + sc.sorted.findIndex(c => c <= n) : 0;
-  const rarer = sc.sorted.filter(c => c < n).length;
-  const pctRaw = 100 * rarer / sc.distinct;
-  const pctNames = pctRaw >= 99 ? (pctRaw >= 99.9 ? '99.9' : Math.floor(pctRaw * 10) / 10) : Math.floor(pctRaw);
   const uniqueShare = Math.round(100 * sc.sorted.filter(c => c === 1).length / sc.distinct);
   const noun = nounFor(sp, 2), Noun = sp === 'All' ? 'pet' : sp.toLowerCase();
   const otherSp = entry && sp !== 'All' ? entry.rows.length - n : 0;
@@ -549,7 +546,15 @@ function lookupName() {
   if (n === 0) sentence = `No licensed ${Noun} in Seattle is named <b>${esc(display)}</b>.` +
     (otherSp ? ` But ${fmt(otherSp)} ${nounFor('All', otherSp)} of another species ${otherSp === 1 ? 'is' : 'are'}.` : ' If yours is, it would be the first.');
   else if (n === 1) sentence = `Just one licensed ${Noun} in Seattle is named <b>${esc(display)}</b>. ${uniqueShare}% of Seattle's ${noun.replace(/s$/, '')} names are like that: used only once.`;
-  else sentence = `<b>${esc(display)}</b> is the <b>#${fmt(rank)}</b> name for Seattle ${noun}, shared by <b>${fmt(n)}</b>. That's about 1 in ${fmt(Math.round(sc.rows.length / n))} ${noun}, and more common than <b>${pctNames}%</b> of names.`;
+  else {
+    // Say how many names beat this one. "More common than 80% of names" was true but read backwards
+    // for rare names, since most names belong to just one or two pets.
+    const above = sc.sorted.filter(c => c > n).length, abovePct = 100 * above / sc.distinct;
+    const aboveTxt = above === 0 ? 'No other name is more popular.'
+      : abovePct < 0.1 ? `Only <b>${fmt(above)}</b> name${above === 1 ? ' is' : 's are'} more popular.`
+      : `${abovePct < 5 ? 'Only ' : ''}<b>${abovePct < 1 ? abovePct.toFixed(1) : Math.round(abovePct)}%</b> of names are more popular.`;
+    sentence = `<b>${esc(display)}</b> is the <b>#${fmt(rank)}</b> name for Seattle ${noun}, shared by <b>${fmt(n)}</b>. That's about 1 in ${fmt(Math.round(sc.rows.length / n))} ${noun}. ${aboveTxt}`;
+  }
 
   // position on a log scale from 1 to the top name
   const maxN = sc.top[1];
