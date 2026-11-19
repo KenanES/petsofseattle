@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=33">
+<link rel="stylesheet" href="style.css?v=35">
 <script src="track.js"></script>
 </head>
 <body>
@@ -94,6 +94,25 @@
     <span><small>Next: Adopt</small>Find a pet that needs a home</span><i aria-hidden="true">→</i>
   </a>
 </main>
+
+<section class="news" id="newsletter" aria-labelledby="newsTitle">
+  <div class="wrap news-inner">
+    <div class="news-copy">
+      <p class="news-eyebrow">The Pets of Seattle letter</p>
+      <h2 id="newsTitle">Seattle&rsquo;s pets, four times a year</h2>
+      <p>Each time the city refreshes its pet license data, we&rsquo;ll send what changed: the top names, the names on the rise and neighborhood trends, plus pets waiting for a home at local shelters.</p>
+    </div>
+    <form class="news-form" data-news-form data-source="your-pet" novalidate>
+      <label class="sr" for="newsEmail">Email address</label>
+      <div class="news-row">
+        <input type="email" name="email" id="newsEmail" placeholder="you@example.com" autocomplete="email" required>
+        <button type="submit" class="checkbtn">Sign me up</button>
+      </div>
+      <p class="news-promise">✉️ Just 4 emails a year. No spam, promise. Unsubscribe in one click.</p>
+      <p class="news-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
 
 <footer class="wrap">
   Data: <a href="https://data.seattle.gov/City-Administration/Seattle-Pet-Licenses/jguv-t9rb" target="_blank" rel="noopener">Seattle Pet Licenses</a>, City of Seattle Open Data, loaded live each visit. Counts include only pets with an active license, and breed is the primary breed on the license.
@@ -254,5 +273,6 @@ async function load() {
 }
 load();
 </script>
+<script src="newsletter.js"></script>
 </body>
 </html>
