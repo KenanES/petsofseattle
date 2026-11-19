@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=33">
+<script src="track.js"></script>
 </head>
 <body>
 <nav class="nav" aria-label="Sections">
@@ -249,6 +250,12 @@ async function loadTwins() {
 renderAdopt();
 loadAdoptables().then(loadTwins);
 
+// usage counts (no-ops until GoatCounter is switched on in track.js)
+document.addEventListener('click', e => {
+  if (e.target.closest('.pet-cta')) track('adopt-meet');
+  else if (e.target.closest('.pet-name')) track('adopt-name-link');
+  else if (e.target.closest('.adopt-more a')) track('adopt-shelter-link');
+});
 </script>
 </body>
 </html>

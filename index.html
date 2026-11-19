@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=33">
+<script src="track.js"></script>
 </head>
 <body>
 <div id="loading"><div><div class="paws"><span>🐾</span><span>🐾</span><span>🐾</span></div><p id="loadmsg">Fetching every licensed pet in Seattle…</p></div></div>
@@ -628,6 +629,7 @@ function readUrl() {
 // Results open on "Check name"; once open they follow the typing live.
 const finderOpen = () => !$('finderSec').hidden;
 function checkName(name, { scroll = true } = {}) {
+  track('name-check');
   if (name != null) $('nameInput').value = name;
   if (!$('nameInput').value.trim()) { $('nameInput').focus(); return; }
   clearTimeout(nameT);
@@ -982,6 +984,7 @@ async function renderCardPreview() {
 }
 function openCardMaker() {
   if (!CARD) return;
+  track('card-open');
   if (!cardOpts.photo && cardOpts.style === 'photo') cardOpts.style = 'art';
   cardOpts.who = CARD.who;
   $('cardDlgTitle').textContent = `Make ${CARD.display}'s card`;
@@ -1018,6 +1021,13 @@ $('cardCopy').onclick = async () => {
   try { await navigator.clipboard.writeText(location.href); $('cardMsg').textContent = 'Link copied'; }
   catch { $('cardMsg').textContent = location.href; }
 };
+
+// usage counts (no-ops until GoatCounter is switched on in track.js)
+$('cardShare').addEventListener('click', () => track('card-share'));
+$('cardDownload').addEventListener('click', () => track('card-download'));
+$('cardCopy').addEventListener('click', () => track('link-copy'));
+$('cardPhoto').addEventListener('change', () => track('card-photo'));
+document.addEventListener('click', e => { if (e.target.closest('#copyLink')) track('link-copy'); if (e.target.closest('a[href="adopt.html"]')) track('to-adopt'); });
 
 // ---------- orchestration ----------
 function renderAll() {

@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=33">
+<script src="track.js"></script>
 </head>
 <body>
 <nav class="nav" aria-label="Sections">
@@ -187,7 +188,7 @@ function setupRare() {
   fillSelect($('zipSel2'), [['', 'All of Seattle'], ...zips.map(([z]) => [z, zipLabel(z)])], q.get('zip') || '');
   $('rareNote').textContent = `Counted across all ${fmt(ALL.length)} licensed Seattle pets. Exact counts, not estimates.`;
   $('spSel').onchange = () => { renderBreedOptions(''); renderRare(); };
-  $('breedSel').onchange = renderRare;
+  $('breedSel').onchange = () => { track('yp-rarity'); renderRare(); };
   $('zipSel2').onchange = renderRare;
   renderRare();
 }
@@ -199,6 +200,7 @@ function bars(items, max) {
 function lookup(name) {
   name = (name || '').trim();
   if (!name) return;
+  track('yp-name-lookup');
   $('lookInput').value = name;
   const key = name.toLowerCase();
   const rows = ALL.filter(r => r.nk === key);
