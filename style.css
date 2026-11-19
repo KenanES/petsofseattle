@@ -483,3 +483,14 @@ footer.wrap { padding-right: max(32px, calc(100% - 860px)); }
 }
 .bar-row .nm small { font-size: 13px; }
 .petcard .stamp { font-size: 12px; }
+
+/* phones/tablets: headline first, then the dog and cat, then the intro and stats */
+@media (max-width: 860px) {
+  .hero { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding-top: 32px; }
+  .hero-text { display: contents; }
+  .hero h1 { order: 1; margin: 0 0 20px; }
+  .hero .hero-art { order: 2; margin: 0 0 22px; }
+  .hero .lede { order: 3; }
+  .hero .statrow { order: 4; margin-top: 28px; }
+  .hero > .namebar { order: 5; margin-top: 32px; }
+}
