@@ -11,12 +11,14 @@
 - Most common dog breeds: Labrador Retriever 2,273; Short Coat Chihuahua 1,344; Golden Retriever 1,276.
 - Most common cat breeds: Domestic Shorthair 6,972; American Shorthair 1,498; Domestic Medium Hair 1,440.
 - ZIP codes with the most licensed pets: 98115 (Wedgwood / Ravenna / View Ridge) 3,500; 98103 (Fremont / Wallingford / Green Lake) 3,138; 98117 (Crown Hill / North Ballard) 2,555.
+- Dog vs. cat by neighborhood: 98177 (Richmond Beach) is 78% dogs and 98136 (Fauntleroy / Morgan Junction) 75%; downtown leans cat, with 98104 (Pioneer Square / ID) at 52% dogs and Belltown and Downtown at 54%. Citywide: 67% dogs.
+- Most licensed pets per 1,000 residents (2020 Census): Magnolia (98199) 73, Crown Hill / North Ballard (98117) 72, Wedgwood / Ravenna / View Ridge (98115) 64.
 - 11,911 distinct pet names are in use; 70% of them belong to exactly one pet.
 - Counts cover licensed pets only, so Seattle's true pet population is larger.
 
 ## Pages
 
-- [Home](https://petsofseattle.org/): top names, breeds, neighborhoods, dogs vs. cats, license timeline, and a pet-name checker.
+- [Home](https://petsofseattle.org/): top names, breeds, an interactive neighborhood map (dogs vs. cats, pets per resident, top name, signature breed), dogs vs. cats, license timeline, and a pet-name checker.
 - [Your pet](https://petsofseattle.org/your-pet.html): count pets matching a species, breed and ZIP code, or look up any name.
 - [Adopt](https://petsofseattle.org/adopt.html): dogs, cats and rabbits up for adoption near Seattle, live from King County's shelter data.
 
