@@ -451,3 +451,35 @@ a.pet-name { display: block; text-decoration: none; }
 .faq-item h3 { font-size: 18px; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
 .faq-item p { color: var(--text-2); font-size: 16px; line-height: 1.55; margin: 0; }
 @media (max-width: 860px) { .faq-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- design audit, Nov 2026 ---------- */
+/* 1. Contrast: secondary gray now passes WCAG AA (4.5:1) on every surface */
+:root { --muted: #636a65; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --muted: #9aa09a; } }
+:root[data-theme="dark"] { --muted: #9aa09a; }
+
+/* 2. Line breaks: balanced headings, no one-word last lines, comfortable line length */
+h1, h2, h3, .page-title { text-wrap: balance; }
+p, li, .lede, .verdict-text, .faq-item p, .report-row span { text-wrap: pretty; }
+.lede { max-width: 68ch; }
+footer { font-size: 15px; line-height: 1.6; text-wrap: pretty; }
+footer.wrap { padding-right: max(32px, calc(100% - 860px)); }
+
+/* 3. Size floor: nothing readable drops below 13px; most supporting text is 14px */
+.bar-row .rank, #timeline .axis text, .farm span, .pet-badge { font-size: 13px; }
+.stat .l small, .suggest .chip, .scale-labels, .legend, .val, .adopt-controls .lbl,
+.pet-facts span, .pet-fresh, .pet-name, #tip, .yp-form .note, .card-lbl, .card-note,
+.card-dlg-tip, .next-band small, .card-busy, #rareCard .badge { font-size: 14px; }
+.caption, .hero-cap { font-size: 16px; }
+
+/* 4. Numbers line up in lists and charts */
+.val, .facts b, .taglist b, .tag b, .mb .c, .farm b, .stat .v, .report-row span { font-variant-numeric: tabular-nums; }
+
+/* 5. Easy to use: visible keyboard focus and finger-sized targets on touch screens */
+:focus-visible { outline: 3px solid var(--cta); outline-offset: 2px; border-radius: 6px; }
+@media (pointer: coarse) {
+  .chip, .seg button, .suggest .chip { min-height: 40px; padding-top: 8px; padding-bottom: 8px; }
+  .bar-row { min-height: 40px; }
+}
+.bar-row .nm small { font-size: 13px; }
+.petcard .stamp { font-size: 12px; }
