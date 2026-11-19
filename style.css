@@ -484,13 +484,19 @@ footer.wrap { padding-right: max(32px, calc(100% - 860px)); }
 .bar-row .nm small { font-size: 13px; }
 .petcard .stamp { font-size: 12px; }
 
-/* phones/tablets: headline first, then the dog and cat, then the intro and stats */
+/* phones/tablets: headline, the dog and cat, then the name checker as the call to action, then intro and stats */
 @media (max-width: 860px) {
   .hero { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding-top: 32px; }
   .hero-text { display: contents; }
   .hero h1 { order: 1; margin: 0 0 20px; }
   .hero .hero-art { order: 2; margin: 0 0 22px; }
-  .hero .lede { order: 3; }
-  .hero .statrow { order: 4; margin-top: 28px; }
-  .hero > .namebar { order: 5; margin-top: 32px; }
+  .hero > .namebar { order: 3; margin: 0 0 32px; }
+  .hero { padding-top: 22px; }
+  .hero h1 { margin-bottom: 14px; }
+  .hero .hero-art { margin-bottom: 18px; }
+  .stage { padding-top: 11%; }
+  .hero .hero-cap { font-size: 15px; margin-top: 8px; }
+  .namebar-label { margin-bottom: 10px; }
+  .hero .lede { order: 4; }
+  .hero .statrow { order: 5; margin-top: 28px; }
 }
