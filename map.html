@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seattle Pets by Neighborhood Map · Pets of Seattle</title>
+<meta name="description" content="Map of Seattle's licensed pets by ZIP code: dog neighborhoods vs. cat neighborhoods, pets per 1,000 residents, and each area's top name and signature breed.">
+<link rel="canonical" href="https://petsofseattle.org/map">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pets of Seattle">
+<meta property="og:url" content="https://petsofseattle.org/map">
+<meta property="og:title" content="Seattle's pets, neighborhood by neighborhood">
+<meta property="og:description" content="Map of Seattle's licensed pets by ZIP code: dog neighborhoods vs. cat neighborhoods, pets per 1,000 residents, and each area's top name and signature breed.">
+<meta property="og:image" content="https://petsofseattle.org/art/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Watercolor drawings of a yellow Labrador and a brown tabby cat in front of the Space Needle and Mount Rainier">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="art/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="art/apple-touch-icon.png">
+<meta name="theme-color" content="#173d2e">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://petsofseattle.org/#website", "name": "Pets of Seattle", "url": "https://petsofseattle.org/", "inLanguage": "en-US"}, {"@type": "WebPage", "name": "Seattle Pets by Neighborhood Map · Pets of Seattle", "url": "https://petsofseattle.org/map", "isPartOf": {"@id": "https://petsofseattle.org/#website"}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=39">
+<script src="track.js"></script>
+<script src="nav.js?v=1" defer></script>
+</head>
+<body>
+<div id="loading"><div><div class="paws"><span>🐾</span><span>🐾</span><span>🐾</span></div><p id="loadmsg">Fetching every licensed pet in Seattle…</p></div></div>
+<div id="tip"></div>
+
+<nav class="nav" aria-label="Site">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" fill="#eab53b"><g transform="translate(8.5 18.5) rotate(-14) scale(1)"><ellipse cx="0" cy="3" rx="4.2" ry="3.6"/><ellipse cx="-4.6" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(-20 -4.6 -2.6)"/><ellipse cx="-1.6" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="1.8" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="4.8" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(20 4.8 -2.6)"/></g><g transform="translate(19.5 8.5) rotate(-14) scale(0.85)"><ellipse cx="0" cy="3" rx="4.2" ry="3.6"/><ellipse cx="-4.6" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(-20 -4.6 -2.6)"/><ellipse cx="-1.6" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="1.8" cy="-5.4" rx="1.6" ry="2.2"/><ellipse cx="4.8" cy="-2.6" rx="1.6" ry="2.1" transform="rotate(20 4.8 -2.6)"/></g></svg>
+      <span class="brand-name">Pets of Seattle</span>
+    </a>
+    <div class="nav-links">
+      <a href="names">Names</a>
+      <a href="map" aria-current="page">Map</a>
+      <a href="breeds">Breeds</a>
+      <a href="dogs-vs-cats">Dogs vs. cats</a>
+      <a href="licenses">Licenses</a>
+      <a href="meet">Meet a pet</a>
+      <a href="your-pet">Your pet</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navMenu"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 4.5h14M2 9h14M2 13.5h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Menu</button>
+    <a class="cta" href="adopt">Adopt</a>
+  </div>
+  <div class="nav-menu" id="navMenu" hidden>
+    <div class="wrap menu-grid">
+      <a class="menu-tile" href="./"><span class="e" aria-hidden="true">🐾</span><b>Home</b></a>
+      <a class="menu-tile" href="names"><span class="e" aria-hidden="true">🏷️</span><b>Names</b></a>
+      <a class="menu-tile" href="map" aria-current="page"><span class="e" aria-hidden="true">🗺️</span><b>Map</b></a>
+      <a class="menu-tile" href="breeds"><span class="e" aria-hidden="true">🐕</span><b>Breeds</b></a>
+      <a class="menu-tile" href="dogs-vs-cats"><span class="e" aria-hidden="true">⚖️</span><b>Dogs vs. cats</b></a>
+      <a class="menu-tile" href="licenses"><span class="e" aria-hidden="true">📅</span><b>Licenses</b></a>
+      <a class="menu-tile" href="meet"><span class="e" aria-hidden="true">🎲</span><b>Meet a pet</b></a>
+      <a class="menu-tile" href="your-pet"><span class="e" aria-hidden="true">🔍</span><b>Your pet</b></a>
+    </div>
+  </div>
+</nav>
+
+<header class="wrap page-head">
+  <h1 class="page-title">Seattle, neighborhood by neighborhood</h1>
+  <p class="lede" id="hoodsLede"><b>98115</b> (Wedgwood / Ravenna / View Ridge) has more licensed pets than any other ZIP code: <b>3,500</b>. North Seattle dominates the top of the list, with 98103 (Fremont / Wallingford / Green Lake) and 98117 (Crown Hill / North Ballard) close behind.</p>
+</header>
+
+<div class="filters">
+  <div class="wrap">
+    <span class="viewing">Viewing</span>
+    <div class="chips" id="speciesChips"></div>
+    <select id="zipSel" aria-label="Neighborhood"></select>
+    <div class="spacer"></div>
+    <span class="status" id="status"></span>
+  </div>
+</div>
+
+<main class="wrap page-main">
+  <section class="sec" id="hoods">
+    <div class="map-block" id="mapBlock">
+      <div class="map-controls">
+        <div class="seg" role="radiogroup" aria-label="Map view" id="mapView">
+          <button type="button" role="radio" data-v="lean">Dogs vs. cats</button>
+          <button type="button" role="radio" data-v="rate">Pets per 1,000 residents</button>
+          <button type="button" role="radio" data-v="name">Top name</button>
+          <button type="button" role="radio" data-v="breed">Signature breed</button>
+        </div>
+      </div>
+      <div class="map-grid">
+        <figure class="map-fig">
+          <svg id="cityMap" role="group" aria-label="Map of Seattle neighborhoods by ZIP code" preserveAspectRatio="xMidYMid meet"></svg>
+          <figcaption class="map-legend" id="mapLegend"></figcaption>
+        </figure>
+        <div class="map-side">
+          <div class="map-detail" id="mapDetail" aria-live="polite"></div>
+          <div class="map-rank">
+            <h3 id="mapRankTitle"></h3>
+            <ol class="map-list" id="mapList"></ol>
+          </div>
+          <p class="map-note">Map: US Census Bureau ZIP code areas and 2020 population, trimmed to Seattle's city limits and shoreline. ZIP codes that reach outside the city show only their Seattle part.</p>
+        </div>
+      </div>
+    </div>
+    <div class="split">
+      <div class="panel">
+        <h3>Licensed pets by ZIP code</h3>
+        <div class="legend" id="zipLegend"></div>
+        <div class="bars" id="zipBars"></div>
+        <div style="margin-top:12px"><button class="linkbtn" id="zipMore">Show all ZIP codes</button></div>
+      </div>
+      <div class="aside">
+        <h3>Neighborhood facts</h3>
+        <ul class="facts" id="zipFacts"></ul>
+        <h3 style="margin-top:28px">How to use this</h3>
+        <p>Click any ZIP code to filter the whole page to that neighborhood. Click it again to go back to all of Seattle.</p>
+        <p>Neighborhood names are approximate labels for each ZIP code, not official city boundaries.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="wrap explore" aria-labelledby="exploreTitle">
+  <h2 id="exploreTitle">Keep exploring</h2>
+  <div class="explore-grid">
+    <a class="ex-tile" href="./"><span class="e" aria-hidden="true">✨</span><b>Check a name</b><span class="t">How many Seattle pets share your pet's name?</span></a>
+    <a class="ex-tile" href="names"><span class="e" aria-hidden="true">🏷️</span><b>Names</b><span class="t" id="rpNames">Luna leads, worn by 358 pets</span></a>
+    <a class="ex-tile" href="breeds"><span class="e" aria-hidden="true">🐕</span><b>Breeds</b><span class="t" id="rpBreeds">Labs lead the dogs, Domestic Shorthairs the cats</span></a>
+    <a class="ex-tile" href="dogs-vs-cats"><span class="e" aria-hidden="true">⚖️</span><b>Dogs vs. cats</b><span class="t" id="rpVs">About 2 dogs for every cat</span></a>
+    <a class="ex-tile" href="licenses"><span class="e" aria-hidden="true">📅</span><b>Licenses</b><span class="t" id="rpLic">76% of active licenses issued in 2026</span></a>
+    <a class="ex-tile" href="meet"><span class="e" aria-hidden="true">🎲</span><b>Meet a pet</b><span class="t" id="rpMeet">A random pet, plus 11 goats and 3 pigs</span></a>
+    <a class="ex-tile" href="your-pet"><span class="e" aria-hidden="true">🔍</span><b>Your pet</b><span class="t">Match breed, neighborhood and name</span></a>
+    <a class="ex-tile" href="adopt"><span class="e" aria-hidden="true">🏠</span><b>Adopt</b><span class="t">Pets waiting for a home near Seattle</span></a>
+  </div>
+</section>
+
+<section class="news" id="newsletter" aria-labelledby="newsTitle">
+  <div class="wrap news-inner">
+    <div class="news-copy">
+      <p class="news-eyebrow">The Pets of Seattle letter</p>
+      <h2 id="newsTitle">Seattle&rsquo;s pets, four times a year</h2>
+      <p>Each time the city refreshes its pet license data, we&rsquo;ll send what changed: the top names, the names on the rise and neighborhood trends, plus pets waiting for a home at local shelters.</p>
+    </div>
+    <form class="news-form" data-news-form data-source="map" novalidate>
+      <label class="sr" for="newsEmail">Email address</label>
+      <div class="news-row">
+        <input type="email" name="email" id="newsEmail" placeholder="you@example.com" autocomplete="email" required>
+        <button type="submit" class="checkbtn">Sign me up</button>
+      </div>
+      <p class="news-promise">✉️ Just 4 emails a year. No spam, promise. Unsubscribe in one click.</p>
+      <p class="news-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<footer class="wrap">
+  Data: <a href="https://data.seattle.gov/City-Administration/Seattle-Pet-Licenses/jguv-t9rb" target="_blank" rel="noopener">Seattle Pet Licenses</a>, City of Seattle Open Data, loaded live each visit. <span id="asof"></span>
+</footer>
+
+<script src="app.js?v=1"></script>
+<script src="map.js?v=3"></script>
+<script src="newsletter.js"></script>
+</body>
+</html>

@@ -18,7 +18,13 @@
 
 ## Pages
 
-- [Home](https://petsofseattle.org/): top names, breeds, an interactive neighborhood map (dogs vs. cats, pets per resident, top name, signature breed), dogs vs. cats, license timeline, and a pet-name checker.
+- [Home](https://petsofseattle.org/): a pet-name checker (how many Seattle pets share a name) and links to every section.
+- [Names](https://petsofseattle.org/names): the top 20 names, filterable by species and ZIP code, plus food names and very-Seattle names.
+- [Neighborhood map](https://petsofseattle.org/map): an interactive ZIP code map (dogs vs. cats, pets per 1,000 residents, top name, signature breed) and pets by ZIP code.
+- [Breeds](https://petsofseattle.org/breeds): the top dog and cat breeds, mixes and doodles.
+- [Dogs vs. cats](https://petsofseattle.org/dogs-vs-cats): the names that lean most toward dogs or cats.
+- [Licenses](https://petsofseattle.org/licenses): active licenses by month of issue.
+- [Meet a pet](https://petsofseattle.org/meet): a random licensed pet, plus every licensed goat and pig.
 - [Your pet](https://petsofseattle.org/your-pet): count pets matching a species, breed and ZIP code, or look up any name.
 - [Adopt](https://petsofseattle.org/adopt): dogs, cats and rabbits up for adoption near Seattle, live from King County's shelter data.
 
