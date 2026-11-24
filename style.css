@@ -577,9 +577,13 @@ footer.wrap { padding-right: max(32px, calc(100% - 860px)); }
   .filters .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1 1 auto; }
   .filters .chips::-webkit-scrollbar { display: none; }
   .filters .chips .chip { flex: none; }
-  .filters select { flex: 0 0 112px; width: 112px; text-overflow: ellipsis; }
+  .filters .chips { display: none; }
+  .filters select { flex: 1 1 0; width: auto; min-width: 0; max-width: none; text-overflow: ellipsis; padding: 9px 12px; font-size: 15px; }
+  .filters .sp-sel { flex: 0 0 38%; }
   .filters .spacer { display: none; }
 }
+.sp-sel { display: none; }
+@media (max-width: 560px) { .filters .sp-sel { display: block; } }
 
 /* hero link to the neighborhood map */
 .map-teaser { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 16px; border: 1px solid var(--line, rgba(0,0,0,.12)); border-radius: 14px; background: var(--surface); color: var(--text-2, inherit); font-size: 15px; line-height: 1.4; text-decoration: none; transition: border-color .15s, transform .15s; }

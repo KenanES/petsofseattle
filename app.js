@@ -108,6 +108,11 @@ function renderTiles() {
   if (!$('speciesChips')) return;
   $('speciesChips').innerHTML = ['All', ...SPECIES].map(s => `<button class="chip${state.species === s ? ' on' : ''}" data-s="${s}">${s === 'All' ? 'All pets' : EMOJI[s] + ' ' + PLURAL[s]}</button>`).join('');
   $('speciesChips').querySelectorAll('.chip').forEach(b => b.onclick = () => setSpecies(b.dataset.s));
+  // phones get a dropdown instead of the chips, so the whole filter row fits
+  if ($('speciesSel')) {
+    $('speciesSel').innerHTML = ['All', ...SPECIES].map(s => `<option value="${s}"${state.species === s ? ' selected' : ''}>${s === 'All' ? '🐾 All pets' : EMOJI[s] + ' ' + PLURAL[s]}</option>`).join('');
+    $('speciesSel').onchange = e => setSpecies(e.target.value);
+  }
 }
 // ---------- hero text + license tag ----------
 const top1 = m => [...m.entries()].sort((a, b) => b[1] - a[1])[0] || [];

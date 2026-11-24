@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,400..700&family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=39">
+<link rel="stylesheet" href="style.css?v=40">
 <script src="track.js"></script>
 <script src="nav.js?v=1" defer></script>
 </head>
@@ -72,6 +72,7 @@
   <div class="wrap">
     <span class="viewing">Viewing</span>
     <div class="chips" id="speciesChips"></div>
+    <select id="speciesSel" class="sp-sel" aria-label="Which pets"></select>
     <select id="zipSel" aria-label="Neighborhood"></select>
     <div class="spacer"></div>
     <span class="status" id="status"></span>
@@ -124,7 +125,7 @@
   Data: <a href="https://data.seattle.gov/City-Administration/Seattle-Pet-Licenses/jguv-t9rb" target="_blank" rel="noopener">Seattle Pet Licenses</a>, City of Seattle Open Data, loaded live each visit. <span id="asof"></span>
 </footer>
 
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
 <script src="newsletter.js"></script>
 </body>
 </html>
