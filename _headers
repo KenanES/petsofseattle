@@ -5,9 +5,10 @@
 #   gc.zgo.at / petsofseattle.goatcounter.com  GoatCounter visitor counts
 #   buttondown.com  newsletter sign-ups
 #   petharbor.com  adoptable-pet photos
+#   static.cloudflareinsights.com / cloudflareinsights.com  Cloudflare's own visitor stats (Cloudflare adds this script itself)
 # Adding a new outside service? Add its address here too, or browsers will block it.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://petharbor.com https://petsofseattle.goatcounter.com; connect-src 'self' https://data.seattle.gov https://data.kingcounty.gov https://buttondown.com https://petsofseattle.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://gc.zgo.at https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://petharbor.com https://petsofseattle.goatcounter.com; connect-src 'self' https://data.seattle.gov https://data.kingcounty.gov https://buttondown.com https://petsofseattle.goatcounter.com https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=31536000
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
