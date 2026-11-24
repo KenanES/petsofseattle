@@ -816,7 +816,13 @@ async function load() {
     $('asof').textContent = `Newest license in the data: ${latest.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.`;
     $('loading').style.opacity = 0; setTimeout(() => $('loading').remove(), 400);
   } catch (e) {
-    $('loadmsg').innerHTML = `Couldn't reach Seattle's open data portal (${esc(e.message)}).<br><button class="linkbtn" onclick="location.reload()">Try again</button>`;
+    $('loadmsg').innerHTML = `Couldn't reach Seattle's open data portal (${esc(e.message)}).<br><a class="linkbtn" href="">Try again</a>`;
   }
 }
 load();
+// if the cat drawing is missing, the dog takes the stage alone
+(() => {
+  const img = document.querySelector('#artCat img'); if (!img) return;
+  const solo = () => { img.closest('.pet-art').hidden = true; $('stage').classList.add('solo'); };
+  if (img.complete && !img.naturalWidth) solo(); else img.addEventListener('error', solo);
+})();

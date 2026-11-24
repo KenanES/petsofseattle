@@ -1,0 +1,173 @@
+/* Adopt page: adoptable pets near Seattle, live from King County. */
+const $ = id => document.getElementById(id);
+const fmt = n => n.toLocaleString('en-US');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+function titleName(n) {
+  n = n.trim();
+  return n === n.toUpperCase() || n === n.toLowerCase() ? n.toLowerCase().replace(/(^|[\s\-'])\S/g, c => c.toUpperCase()) : n;
+}
+function countBy(rows, keyFn) { const m = new Map(); for (const r of rows) { const k = keyFn(r); if (k != null && k !== '') m.set(k, (m.get(k) || 0) + 1); } return m; }
+
+// ---------- adoption: King County (RASKC) open data ----------
+const ADOPT_API = 'https://data.kingcounty.gov/resource/yaai-7frk.json?$limit=1000&$where=' + encodeURIComponent("record_type='ADOPTABLE'");
+const RASKC_URL = 'https://kingcounty.gov/en/dept/executive-services/animals-pets-pests/regional-animal-services/overview-about';
+const ADOPT_TYPES = { Dog: ['🐶', 'Dogs'], Cat: ['🐱', 'Cats'], Rabbit: ['🐰', 'Rabbits'], Other: ['🐾', 'Others'] };
+const AGE_GROUPS = [['any', 'Any'], ['baby', 'Under 1'], ['young', '1–3 yrs'], ['adult', '3–8 yrs'], ['senior', '8+ yrs']];
+let ADOPT = null, adoptError = '';
+const adoptState = { type: 'Dog', age: 'any', sort: 'newest' };
+
+function adoptType(t) {
+  t = (t || '').toLowerCase();
+  return t.startsWith('dog') ? 'Dog' : t.startsWith('cat') ? 'Cat' : t.startsWith('rabbit') ? 'Rabbit' : 'Other';
+}
+function ageMonths(s) {
+  s = (s || '').toUpperCase();
+  const n = re => +((s.match(re) || [])[1] || 0);
+  return n(/(\d+)\s*YEAR/) * 12 + n(/(\d+)\s*MONTH/) + n(/(\d+)\s*WEEK/) / 4.35;
+}
+function ageText(mo, raw) {
+  if (!raw) return 'Age unknown';
+  if (mo < 4) return Math.max(1, Math.round(mo * 4.35)) + ' weeks';
+  if (mo < 12) return Math.round(mo) + ' months';
+  const y = Math.floor(mo / 12), m = Math.round(mo % 12);
+  return y + (y === 1 ? ' yr' : ' yrs') + (m && y < 3 ? ' ' + m + ' mo' : '');
+}
+const ageGroup = mo => mo < 12 ? 'baby' : mo < 36 ? 'young' : mo < 96 ? 'adult' : 'senior';
+function milesFromDowntown(lat, lon) {
+  const R = 3958.8, rad = d => d * Math.PI / 180, a0 = 47.6062, o0 = -122.3321;
+  const dA = rad(lat - a0), dO = rad(lon - o0);
+  const h = Math.sin(dA / 2) ** 2 + Math.cos(rad(a0)) * Math.cos(rad(lat)) * Math.sin(dO / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+// The memo is plain text separated by "</p>"; drop the header lines we already show as facts.
+function storyParas(memo) {
+  return (memo || '').split(/<\/p>/i).map(t => t.replace(/<[^>]*>/g, '').trim())
+    .filter(t => t && !/^(Received on|Description|Age|Adoption Fee|Current Location):/i.test(t));
+}
+async function loadAdoptables() {
+  try {
+    const res = await fetch(ADOPT_API);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+    ADOPT = raw.filter(r => r.animal_name && !/deceased/i.test(r.animal_type || '')).map(r => {
+      const mo = ageMonths(r.age);
+      const fee = (r.memo || '').match(/Adoption Fee:\s*\$([\d,]+(?:\.\d\d)?)/i);
+      const lat = parseFloat(r.obfuscated_latitude), lon = parseFloat(r.obfuscated_longitude);
+      return {
+        id: r.animal_id, name: titleName(r.animal_name), type: adoptType(r.animal_type), mo, age: ageText(mo, r.age),
+        sex: (r.animal_gender || '').toLowerCase(), breed: r.animal_breed || r.animal_type, color: r.animal_color || '',
+        fee: fee ? '$' + fee[1].replace(/\.00$/, '') : null,
+        foster: /foster/i.test(r.current_location || ''),
+        date: r.date ? new Date(r.date) : null,
+        img: r.image && r.image.url, imgAlt: r.image_alt_text || '',
+        listing: r.animal_id ? 'https://petharbor.com/pet.asp?uaid=KING.' + encodeURIComponent(r.animal_id) : null,
+        how: (r.link && r.link.url) || RASKC_URL,
+        dist: isFinite(lat) && isFinite(lon) ? milesFromDowntown(lat, lon) : null,
+        story: storyParas(r.memo)
+      };
+    });
+    const types = new Set(ADOPT.map(a => a.type));
+    if (!types.has(adoptState.type)) adoptState.type = 'All';
+  } catch (e) { ADOPT = []; adoptError = e.message; }
+  renderAdopt();
+}
+$('adoptSort').onchange = e => { adoptState.sort = e.target.value; renderAdopt(); };
+
+function daysSince(d) { return d ? Math.max(0, Math.floor((Date.now() - d) / 864e5)) : null; }
+function waitText(d) {
+  const n = daysSince(d);
+  if (n == null) return '';
+  if (n === 0) return 'Arrived today';
+  if (n < 60) return `Waiting ${n} day${n === 1 ? '' : 's'}`;
+  return `Waiting since ${d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`;
+}
+function renderAdopt() {
+  const grid = $('adoptGrid');
+  if (ADOPT === null) { grid.innerHTML = '<p class="adopt-empty">Loading adoptable pets…</p>'; return; }
+  if (adoptError || !ADOPT.length) {
+    $('adoptLede').textContent = "We couldn't load King County's adoptable pets just now. The shelters below list their animals directly.";
+    $('adoptControls').style.display = 'none';
+    grid.innerHTML = adoptError ? `<p class="adopt-empty">(${esc(adoptError)})</p>` : '';
+    return;
+  }
+  const counts = countBy(ADOPT, a => a.type);
+  const parts = ['Dog', 'Cat', 'Rabbit', 'Other'].filter(t => counts.get(t)).map(t => `<b>${counts.get(t)}</b> ${counts.get(t) === 1 ? ADOPT_TYPES[t][1].replace(/s$/, '').toLowerCase() : ADOPT_TYPES[t][1].toLowerCase()}`);
+  const longest = [...ADOPT].filter(a => a.date).sort((a, b) => a.date - b.date)[0];
+  const list = parts.length > 1 ? parts.slice(0, -1).join(', ') + ' and ' + parts.slice(-1) : parts[0];
+  $('adoptLede').innerHTML = `Right now King County's shelter has ${list} ready for a home, a short drive south of Seattle in Kent or with foster families.` +
+    (longest ? ` <b>${esc(longest.name)}</b> the ${esc(adoptType(longest.type) === 'Other' ? 'pet' : longest.type.toLowerCase())} has waited the longest, since ${longest.date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}.` : '');
+
+  $('adoptType').innerHTML = [...['Dog', 'Cat', 'Rabbit', 'Other'].filter(t => counts.get(t)), 'All'].map(t =>
+    `<button class="chip${adoptState.type === t ? ' on' : ''}" data-t="${t}">${t === 'All' ? 'All' : ADOPT_TYPES[t][0] + ' ' + ADOPT_TYPES[t][1]} <b>${t === 'All' ? ADOPT.length : counts.get(t)}</b></button>`).join('');
+  $('adoptType').querySelectorAll('.chip').forEach(b => b.onclick = () => { adoptState.type = b.dataset.t; renderAdopt(); });
+  $('adoptAge').innerHTML = AGE_GROUPS.map(([k, l]) => `<button class="chip${adoptState.age === k ? ' on' : ''}" data-a="${k}">${l}</button>`).join('');
+  $('adoptAge').querySelectorAll('.chip').forEach(b => b.onclick = () => { adoptState.age = b.dataset.a; renderAdopt(); });
+
+  const sorters = {
+    newest: (a, b) => (b.date || 0) - (a.date || 0),
+    waiting: (a, b) => (a.date || Infinity) - (b.date || Infinity),
+    young: (a, b) => a.mo - b.mo,
+    old: (a, b) => b.mo - a.mo
+  };
+  const shown = ADOPT.filter(a => (adoptState.type === 'All' || a.type === adoptState.type) && (adoptState.age === 'any' || ageGroup(a.mo) === adoptState.age))
+    .sort(sorters[adoptState.sort]);
+  $('adoptCount').textContent = `${shown.length} of ${ADOPT.length} pets`;
+  if (!shown.length) {
+    grid.innerHTML = `<p class="adopt-empty">No ${adoptState.type === 'All' ? 'pets' : ADOPT_TYPES[adoptState.type][1].toLowerCase()} in that age group right now. Try another age, or check the shelters below.</p>`;
+    return;
+  }
+  grid.innerHTML = shown.map(a => {
+    const twins = TWINS ? (TWINS.get(a.name.toUpperCase()) || 0) : null;
+    const nameLine = twins == null ? '' : `<a class="pet-name" href="your-pet?name=${encodeURIComponent(a.name)}#lookup">${twins
+      ? `${fmt(twins)} licensed Seattle pet${twins === 1 ? ' is' : 's are'} named ${esc(a.name)}`
+      : `No licensed Seattle pet is named ${esc(a.name)} yet`}</a>`;
+    const story = a.story.length ? `<details><summary>Read ${esc(a.name)}'s story</summary>${a.story.map(t => `<p>${esc(t)}</p>`).join('')}</details>` : '';
+    const where = a.foster ? 'In a foster home' : 'At the Kent adoption center';
+    return `<article class="pet">
+      <div class="pet-photo" data-emoji="${ADOPT_TYPES[a.type][0]}">
+        ${a.img ? `<img src="${esc(a.img)}" alt="${esc(a.name)}, a ${esc(a.breed)}" loading="lazy" referrerpolicy="no-referrer">` : ''}
+        <span class="pet-badge">${a.foster ? 'In foster' : 'At the shelter'}</span>
+      </div>
+      <h3>${esc(a.name)}</h3>
+      <div class="pet-meta">${esc(a.breed)}</div>
+      <div class="pet-facts"><span>${esc(a.age)}</span>${a.sex ? `<span>${esc(a.sex)}</span>` : ''}${a.fee ? `<span class="fee">Fee ${esc(a.fee)}</span>` : ''}</div>
+      <div class="pet-fresh">${esc(waitText(a.date))} · ${where}${a.dist != null ? `, ~${Math.round(a.dist)} mi from downtown` : ''}</div>
+      ${nameLine}
+      ${story}
+      <div class="pet-actions">
+        ${a.listing ? `<a class="pet-cta" href="${esc(a.listing)}" target="_blank" rel="noopener">Meet ${esc(a.name)} →</a>` : ''}
+        <a class="linkbtn" href="${esc(a.how)}" target="_blank" rel="noopener">How adoption works</a>
+      </div>
+    </article>`;
+  }).join('');
+}
+// How many licensed Seattle pets share each adoptable pet's name (one small grouped query).
+let TWINS = null;
+async function loadTwins() {
+  const names = [...new Set(ADOPT.map(a => a.name.toUpperCase().replace(/'/g, "''")))];
+  if (!names.length) return;
+  const q = new URLSearchParams({
+    $select: 'upper(animal_s_name) as n, count(*) as c',
+    $where: `upper(animal_s_name) in (${names.map(n => `'${n}'`).join(',')})`,
+    $group: 'upper(animal_s_name)', $limit: '5000'
+  });
+  try {
+    const rows = await (await fetch('https://data.seattle.gov/resource/jguv-t9rb.json?' + q)).json();
+    TWINS = new Map(rows.map(r => [r.n, +r.c]));
+    renderAdopt();
+  } catch (e) { /* the name line is optional */ }
+}
+renderAdopt();
+loadAdoptables().then(loadTwins);
+
+// usage counts (no-ops until GoatCounter is switched on in track.js)
+document.addEventListener('click', e => {
+  if (e.target.closest('.pet-cta')) track('adopt-meet');
+  else if (e.target.closest('.pet-name')) track('adopt-name-link');
+  else if (e.target.closest('.adopt-more a')) track('adopt-shelter-link');
+});
+// a photo that fails to load falls back to the emoji tile
+document.addEventListener('error', e => {
+  const img = e.target;
+  if (img.tagName === 'IMG' && img.parentNode && img.parentNode.classList.contains('pet-photo')) { img.parentNode.classList.add('nophoto'); img.remove(); }
+}, true);

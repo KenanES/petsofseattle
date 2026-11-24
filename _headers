@@ -1,0 +1,16 @@
+# Security headers, applied by Cloudflare Pages to every page and file.
+# Content-Security-Policy lists the only outside services the site may use:
+#   data.seattle.gov / data.kingcounty.gov  pet license and adoption data
+#   fonts.googleapis.com / fonts.gstatic.com  fonts
+#   gc.zgo.at / petsofseattle.goatcounter.com  GoatCounter visitor counts
+#   buttondown.com  newsletter sign-ups
+#   petharbor.com  adoptable-pet photos
+# Adding a new outside service? Add its address here too, or browsers will block it.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://petharbor.com https://petsofseattle.goatcounter.com; connect-src 'self' https://data.seattle.gov https://data.kingcounty.gov https://buttondown.com https://petsofseattle.goatcounter.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
